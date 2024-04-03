@@ -1,0 +1,30 @@
+# Apple直连的规则，包括商店（下载），Apple Music等 具体使用方法请见本库的Sample Profile。
+# --> Author:tutu
+
+# > Others
+DOMAIN,aod.itunes.apple.com //Apple Music
+DOMAIN-SUFFIX,store.apple.com // Apple Store Online
+
+# > Maps
+DOMAIN,gspe19-cn-ssl.ls.apple.com
+DOMAIN,gspe1-ssl.ls.apple.com // Country Code
+DOMAIN-SUFFIX,is.autonavi.com
+
+
+# --------DOWNLOAD--------
+# > Store
+USER-AGENT,com.apple.appstored*
+DOMAIN-SUFFIX,mzstatic.com
+DOMAIN,iosapps.itunes.apple.com
+DOMAIN,osxapps.itunes.apple.com
+
+# > Testflight
+#DOMAIN,testflight.apple.com
+
+#  > Update
+DOMAIN,updates.cdn-apple.com //system update
+DOMAIN,supportdownload.apple.com
+DOMAIN,appldnld.apple.com
+DOMAIN,swcdn.apple.com
+DOMAIN,apptrailers.itunes.apple.com
+DOMAIN,updates-http.cdn-apple.com
