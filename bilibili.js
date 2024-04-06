@@ -498,7 +498,6 @@ async function coin() {
 }
 
 async function getFavUid() {
-    // 更新请求URL，并添加tagid参数
     const myRequest = {
         url: `https://api.bilibili.com/x/relation/tag?ps=10&order_type=attention&tagid=-10`,
         headers: {
@@ -509,24 +508,23 @@ async function getFavUid() {
         try {
             const body = $.toObj(response.body)
             let like_uid_list = []
-            if (body?.code === 0) {
-                $.log("- 获取关注列表成功")
-                let like_list = body?.data?.list
-                for (let i = 0; i < like_list.length; i++) {
-                    // 收集关注的用户ID
-                    like_uid_list[i] = like_list[i].mid
-                }
-                return like_uid_list
+            if (body?.code === 0 && Array.isArray(body.data)) {
+                $.log("- 获取关注列表成功");
+                // 直接遍历data数组，收集mid
+                like_uid_list = body.data.map(item => item.mid);
+                return like_uid_list;
             } else {
-                $.log("- 获取关注列表失败")
-                $.log("- 失败原因 " + body?.message)
-                return like_uid_list
+                $.log("- 获取关注列表失败");
+                $.log("- 失败原因 " + body?.message);
+                return like_uid_list;
             }
         } catch (e) {
-            $.logErr(e, response)
+            $.logErr(e, response);
+            return [];
         }
     })
 }
+
 
 
 async function getFavAid(arr) {
