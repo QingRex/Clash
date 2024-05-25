@@ -5,8 +5,8 @@ const urlPattern = /^http:\/\/cwsf\.whut\.edu\.cn\//;
 
 // 存储Cookies并处理错误的函数
 function storeCookies(cookies) {
-    if (cookies) {
-        try {
+    try {
+        if (cookies) {
             // 尝试存储Cookies
             const success = $persistentStore.write(cookies, 'DianFee');
             if (success) {
@@ -16,14 +16,17 @@ function storeCookies(cookies) {
                 // 如果存储失败，发送失败通知
                 $notification.post('捕获Cookies失败', '错误', '存储Cookies失败，请检查脚本并重试。');
             }
-        } catch (error) {
-            // 捕获存储过程中发生的错误并记录日志
-            console.error('存储Cookies时发生错误:', error);
-            $notification.post('捕获Cookies失败', '错误', '存储Cookies时发生错误，请检查脚本并重试。');
+        } else {
+            // 如果没有找到Cookies，发送警告通知
+            $notification.post('未找到Cookies', '警告', '在请求中未找到Cookies。');
         }
-    } else {
-        // 如果没有找到Cookies，发送警告通知
-        $notification.post('未找到Cookies', '警告', '在请求中未找到Cookies。');
+    } catch (error) {
+        // 捕获存储过程中发生的错误并记录日志
+        console.error('存储Cookies时发生错误:', error);
+        $notification.post('捕获Cookies失败', '错误', `存储Cookies时发生错误: ${error.message}`);
+    } finally {
+        // 无论是否发生错误，始终执行$done
+        $done();
     }
 }
 
@@ -38,14 +41,16 @@ try {
 
         // 调用函数持久化存储Cookies并处理错误
         storeCookies(cookies);
+    } else {
+        // 如果URL不匹配，直接退出
+        console.log('请求URL不匹配，跳过处理。');
+        $done();
     }
 } catch (error) {
     // 捕获整个脚本执行过程中发生的错误并记录日志
     console.error('执行脚本时发生错误:', error);
-    $notification.post('脚本执行错误', '错误', '执行脚本时发生错误，请检查脚本并重试。');
-} finally {
-    // 无论是否发生错误，始终执行$done
-    console.log(`捕获完成要退出啦`);
+    $notification.post('脚本执行错误', '错误', `执行脚本时发生错误: ${error.message}`);
     $done();
 }
+
 
