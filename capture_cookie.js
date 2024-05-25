@@ -34,5 +34,5 @@ if (urlPattern.test($request.url)) {
 }
 
 // 继续处理请求
-$done();
+$done({})
 
