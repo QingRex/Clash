@@ -45,6 +45,7 @@ try {
     $notification.post('脚本执行错误', '错误', '执行脚本时发生错误，请检查脚本并重试。');
 } finally {
     // 无论是否发生错误，始终执行$done
+    console.log(`捕获完成要退出啦`);
     $done();
 }
 
