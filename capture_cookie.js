@@ -26,6 +26,7 @@ function storeCookies(cookies) {
         $notification.post('捕获Cookies失败', '错误', `存储Cookies时发生错误: ${error.message}`);
     } finally {
         // 无论是否发生错误，始终执行$done
+        console.log(`脚本退出`);
         $done();
     }
 }
